@@ -1,0 +1,25 @@
+show parameter db_recovery_file_dest_size
+
+alter system set db_recovery_file_dest_size=6420M scope=spfile;
+
+shutdown immediate
+
+startup mount
+
+ALTER DATABASE ARCHIVELOG;
+
+alter database open;
+
+select name,log_mode from v$database;
+
+archive log list
+
+--Tama;o del FRA
+show parameter db_recovery_file_dest_size
+
+SET ORACLE_SID=XE
+
+
+ALTER SYSTEM SWITCH LOGFILE;
+
+

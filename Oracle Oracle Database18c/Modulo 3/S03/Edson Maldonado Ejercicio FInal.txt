@@ -1,0 +1,61 @@
+create user juan identified by 1;
+
+Usuario creado.
+
+create user juana identified by 1;
+
+Usuario creado.
+
+create user alex identified by 1;
+
+Usuario creado.
+
+create user maria identified by 1;
+
+Usuario creado.
+
+create role personal;
+
+Rol creado.
+
+grant create session to personal;
+
+Concesión terminada correctamente.
+
+grant personal to juan;
+
+Concesión terminada correctamente.
+
+create role administrativo;
+
+Rol creado.
+
+grant create table to administrativo;
+
+Concesión terminada correctamente.
+
+grant personal to administrativo;
+
+Concesión terminada correctamente.
+
+grant administrativo to juana;
+
+Concesión terminada correctamente.
+
+create role analista;
+
+Rol creado.
+
+grant select, insert on hr.employees to analista;
+
+Concesión terminada correctamente.
+
+grant personal to analista;
+
+Concesión terminada correctamente.
+
+grant analista to alex, maria;
+
+Concesión terminada correctamente.
+
+spool off;

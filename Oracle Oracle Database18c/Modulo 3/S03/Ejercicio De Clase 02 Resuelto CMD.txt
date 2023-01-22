@@ -1,0 +1,223 @@
+Microsoft Windows [Versión 10.0.22000.918]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+C:\Users\Cesar>sqlplus / as sysdba
+
+SQL*Plus: Release 18.0.0.0.0 - Production on Vie Sep 9 20:09:26 2022
+Version 18.4.0.0.0
+
+Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+
+Conectado a:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> col username format a20
+SQL> col profile format a20
+SQL> select username,profile from dba_users where username='ALICE';
+
+ninguna fila seleccionada
+
+SQL> col username format a20
+SQL> col profile format a20
+SQL> select username,profile from dba_users where username='Alice';
+
+ninguna fila seleccionada
+
+SQL> show parameter resource
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+resource_limit                       boolean     TRUE
+resource_manage_goldengate           boolean     FALSE
+resource_manager_cpu_allocation      integer     8
+resource_manager_plan                string
+SQL> connect sys/oracle @xepdb1 as sysdba;
+Conectado.
+SQL> col username format a20
+SQL> col profile format a20
+SQL> select username,profile from dba_users where username='ALICE';
+
+USERNAME             PROFILE
+-------------------- --------------------
+ALICE                DEFAULT
+
+SQL> col profile format a12
+SQL> col RESOURCE_NAME format a25
+SQL> col limit format a15
+SQL> set pagesize 100
+SQL> select * from dba_profiles where profile='DEFAULT';
+
+PROFILE      RESOURCE_NAME             RESOURCE LIMIT           COM INH IMP
+------------ ------------------------- -------- --------------- --- --- ---
+DEFAULT      COMPOSITE_LIMIT           KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      SESSIONS_PER_USER         KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      CPU_PER_SESSION           KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      CPU_PER_CALL              KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      LOGICAL_READS_PER_SESSION KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      LOGICAL_READS_PER_CALL    KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      IDLE_TIME                 KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      CONNECT_TIME              KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      PRIVATE_SGA               KERNEL   UNLIMITED       NO  NO  NO
+DEFAULT      FAILED_LOGIN_ATTEMPTS     PASSWORD 10              NO  NO  NO
+DEFAULT      PASSWORD_LIFE_TIME        PASSWORD 180             NO  NO  NO
+DEFAULT      PASSWORD_REUSE_TIME       PASSWORD UNLIMITED       NO  NO  NO
+DEFAULT      PASSWORD_REUSE_MAX        PASSWORD UNLIMITED       NO  NO  NO
+DEFAULT      PASSWORD_VERIFY_FUNCTION  PASSWORD NULL            NO  NO  NO
+DEFAULT      PASSWORD_LOCK_TIME        PASSWORD 1               NO  NO  NO
+DEFAULT      PASSWORD_GRACE_TIME       PASSWORD 7               NO  NO  NO
+DEFAULT      INACTIVE_ACCOUNT_TIME     PASSWORD UNLIMITED       NO  NO  NO
+
+17 filas seleccionadas.
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+Advertencia: íYa no estß conectado a ORACLE!
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracwwwl @xepdb1
+ERROR:
+ORA-01017: nombre de usuario/contrase±a no vßlidos; conexi¾n denegada
+
+
+SQL> connect alice/oracle @xepdb1
+ERROR:
+ORA-28000: La cuenta estß bloqueada.
+
+
+SQL> connect sys/oracle @xepdb1 as sysdba
+Conectado.
+SQL> create profile usr_profile01 limit failed_login_attempts 3;
+
+Perfil creado.
+
+SQL> alter user alice profile usr_profile01;
+
+Usuario modificado.
+
+SQL> connect alice/oracl@xepdb1
+ERROR:
+ORA-28000: La cuenta estß bloqueada.
+
+
+Advertencia: íYa no estß conectado a ORACLE!
+SQL> connect alice/oracl@xepdb1
+ERROR:
+ORA-28000: La cuenta estß bloqueada.
+
+
+SQL> connect alice/oracl@xepdb1
+ERROR:
+ORA-28000: La cuenta estß bloqueada.
+
+
+SQL> connect alice/oracl@xepdb1
+ERROR:
+ORA-28000: La cuenta estß bloqueada.
+
+
+SQL> connect alice/oraceeeel@xepdb1
+ERROR:
+ORA-28000: La cuenta estß bloqueada.
+
+
+SQL> connect sys/oracle @xepdb1 as sysdba
+Conectado.
+SQL> select username,account_status from dba_users where username='ALICE';
+
+USERNAME             ACCOUNT_STATUS
+-------------------- --------------------------------
+ALICE                LOCKED(TIMED)
+
+SQL> SQL> alter user
+SP2-0734: inicio "SQL> alter..." de comando desconocido - resto de la lÝnea ignorado.
+SQL> alice account unlock;
+SP2-0734: inicio "alice acco..." de comando desconocido - resto de la lÝnea ignorado.
+SQL> alter user alice account unlock;
+
+Usuario modificado.
+
+SQL> select username,account_status from dba_users where username='ALICE';
+
+USERNAME             ACCOUNT_STATUS
+-------------------- --------------------------------
+ALICE                OPEN
+
+SQL> create profile usr_profile02 limit sessions_per_user 2;
+
+Perfil creado.
+
+SQL> connect alice/oracle @xepdb1
+Conectado.
+SQL> connect alice/oracle@xepdb1
+Conectado.
+SQL> alter user alice profile usr_profile02;
+alter user alice profile usr_profile02
+*
+ERROR en lÝnea 1:
+ORA-01031: privilegios insuficientes
+
+
+SQL> connect sys/oracle@xepdb1 as sysdba;
+Conectado.
+SQL> alter user alice profile usr_profile02;
+
+Usuario modificado.
+
+SQL> show parameter resource
+
+NAME                                 TYPE        VALUE
+------------------------------------ ----------- ------------------------------
+resource_limit                       boolean     TRUE
+resource_manage_goldengate           boolean     FALSE
+resource_manager_cpu_allocation      integer     8
+resource_manager_plan                string
+SQL> alter system set resource_limit=true;
+
+Sistema modificado.
+
+SQL> connect alice/oracle@xepdb1
+Conectado.
+SQL>

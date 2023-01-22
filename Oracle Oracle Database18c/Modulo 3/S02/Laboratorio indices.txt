@@ -1,0 +1,31 @@
+select employee_id,last_name from emp_test where employee_id =5211;
+
+create index emp_test_emp_id_ix on emp_test(employee_id);
+
+select count(1) from emp_test
+where country_name = 'United Kingdom';
+
+create bitmap index emp_test_country_name_ix on emp_test(country_name);
+
+drop index emp_test_country_name_ix;
+
+select count(1) from emp_test where
+country_name = 'Canada';
+
+--0,057
+
+create index emp_test_country_name_bt on emp_test(country_name);
+
+select count(1) from emp_test where country_name = 'Canada';
+--0,06
+
+drop index emp_test_country_name_bt;
+
+create bitmap index emp_test_country_name_bi on emp_test(country_name);
+
+select count(1) from emp_test where country_name = 'Canada';
+
+drop index emp_test_country_name_bi;
+
+
+DESC EMPLOYEES

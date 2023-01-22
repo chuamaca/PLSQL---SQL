@@ -1,0 +1,368 @@
+C:\Windows\system32>sqlplus / as sysdba
+
+SQL*Plus: Release 18.0.0.0.0 - Production on Vie Sep 2 21:33:06 2022
+Version 18.4.0.0.0
+
+Copyright (c) 1982, 2018, Oracle.  All rights reserved.
+
+
+Conectado a:
+Oracle Database 18c Express Edition Release 18.0.0.0.0 - Production
+Version 18.4.0.0.0
+
+SQL> EXEC DBMS_STATS.gather_table_stats(USER, 'bigtab', cascade=>TRUE);
+BEGIN DBMS_STATS.gather_table_stats(USER, 'bigtab', cascade=>TRUE); END;
+
+*
+ERROR en lÝnea 1:
+ORA-20000: Unable to analyze TABLE "SYS"."BIGTAB", insufficient privileges or
+does not exist
+ORA-06512: en "SYS.DBMS_STATS", lÝnea 39134
+ORA-06512: en "SYS.DBMS_STATS", lÝnea 38411
+ORA-06512: en "SYS.DBMS_STATS", lÝnea 38570
+ORA-06512: en "SYS.DBMS_STATS", lÝnea 39116
+ORA-06512: en lÝnea 1
+
+
+SQL> drop table objects_tab purge;
+drop table objects_tab purge
+           *
+ERROR en lÝnea 1:
+ORA-00942: la tabla o vista no existe
+
+
+SQL> CREATE TABLE objects_tab AS SELECT * FROM all_objects;
+
+Tabla creada.
+
+SQL>
+SQL> ALTER TABLE objects_tab ADD (
+  2    CONSTRAINT objects_tab_pk PRIMARY KEY (object_id)
+  3  );
+
+Tabla modificada.
+
+SQL> EXEC DBMS_STATS.gather_table_stats(USER, 'objects_tab', cascade=>TRUE);
+
+Procedimiento PL/SQL terminado correctamente.
+
+SQL> SET AUTOTRACE TRACEONLY EXP
+SQL> set line 200
+SQL> SELECT * FROM objects_tab WHERE object_id = 10;
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 2097082964
+
+----------------------------------------------------------------------------------------------
+| Id  | Operation                   | Name           | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT            |                |     1 |   133 |     2   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID| OBJECTS_TAB    |     1 |   133 |     2   (0)| 00:00:01 |
+|*  2 |   INDEX UNIQUE SCAN         | OBJECTS_TAB_PK |     1 |       |     1   (0)| 00:00:01 |
+----------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("OBJECT_ID"=10)
+
+SQL> SET AUTOTRACE TRACEONLY EXP
+SQL> SELECT * FROM objects_tab WHERE object_name = 'USER_TABLES';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 821620785
+
+---------------------------------------------------------------------------------
+| Id  | Operation         | Name        | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |             |     1 |   133 |   383   (1)| 00:00:01 |
+|*  1 |  TABLE ACCESS FULL| OBJECTS_TAB |     1 |   133 |   383   (1)| 00:00:01 |
+---------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("OBJECT_NAME"='USER_TABLES')
+
+SQL> CREATE INDEX objects_tab_object_name_vi ON objects_tab(object_name) NOSEGMENT;
+
+═ndice creado.
+
+SQL> SET AUTOTRACE TRACEONLY EXP
+SQL> SELECT * FROM objects_tab WHERE object_name = 'USER_TABLES';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 821620785
+
+---------------------------------------------------------------------------------
+| Id  | Operation         | Name        | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |             |     1 |   133 |   383   (1)| 00:00:01 |
+|*  1 |  TABLE ACCESS FULL| OBJECTS_TAB |     1 |   133 |   383   (1)| 00:00:01 |
+---------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("OBJECT_NAME"='USER_TABLES')
+
+SQL> ALTER SESSION SET "_use_nosegment_indexes" = TRUE;
+
+Sesi¾n modificada.
+
+SQL> SET AUTOTRACE TRACEONLY EXP
+SQL> SELECT * FROM objects_tab WHERE object_name = 'USER_TABLES';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 1505401400
+
+------------------------------------------------------------------------------------------------------------------
+| Id  | Operation                           | Name                       | Rows  | Bytes | Cost (%CPU)| Time      |
+------------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                    |                            |     1 |   133 |     2   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID BATCHED| OBJECTS_TAB                |     1 |   133 |     2   (0)| 00:00:01 |
+|*  2 |   INDEX RANGE SCAN                  | OBJECTS_TAB_OBJECT_NAME_VI |     1 |       |     1   (0)| 00:00:01 |
+------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("OBJECT_NAME"='USER_TABLES')
+
+SQL> EXEC DBMS_STATS.gather_index_stats(USER, 'objects_tab_object_name_vi');
+
+Procedimiento PL/SQL terminado correctamente.
+
+SQL> create table t as select * from USER_objects;
+
+Tabla creada.
+
+SQL> create index t_ind1 on t(object_name) invisible;
+
+═ndice creado.
+
+SQL> select index_name,VISIBILITY from DBA_INDEXES where index_name='T_IND1';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 2300050336
+
+---------------------------------------------------------------------------------------------------------------
+| Id  | Operation                                    | Name           | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                             |                |     2 |   246 |    35   (0)| 00:00:01 |
+|*  1 |  FILTER                                      |                |       |       |            |           |
+|   2 |   NESTED LOOPS OUTER                         |                |     2 |   246 |    35   (0)| 00:00:01 |
+|   3 |    NESTED LOOPS OUTER                        |                |     1 |   112 |    34   (0)| 00:00:01 |
+|   4 |     NESTED LOOPS OUTER                       |                |     1 |   109 |    33   (0)| 00:00:01 |
+|   5 |      NESTED LOOPS                            |                |     1 |   105 |    32   (0)| 00:00:01 |
+|   6 |       NESTED LOOPS                           |                |     1 |   101 |    31   (0)| 00:00:01 |
+|   7 |        NESTED LOOPS OUTER                    |                |     1 |    97 |    30   (0)| 00:00:01 |
+|   8 |         NESTED LOOPS                         |                |     1 |    89 |    29   (0)| 00:00:01 |
+|   9 |          NESTED LOOPS                        |                |     1 |    77 |    28   (0)| 00:00:01 |
+|* 10 |           TABLE ACCESS BY INDEX ROWID BATCHED| OBJ$           |     1 |    49 |    27   (0)| 00:00:01 |
+|* 11 |            INDEX SKIP SCAN                   | I_OBJ2         |     1 |       |    26   (0)| 00:00:01 |
+|* 12 |           TABLE ACCESS BY INDEX ROWID        | IND$           |     1 |    28 |     1   (0)| 00:00:01 |
+|* 13 |            INDEX UNIQUE SCAN                 | I_IND1         |     1 |       |     0   (0)| 00:00:01 |
+|* 14 |          INDEX RANGE SCAN                    | I_OBJ1         |     1 |    12 |     1   (0)| 00:00:01 |
+|* 15 |         INDEX RANGE SCAN                     | I_OBJ1         |     1 |     8 |     1   (0)| 00:00:01 |
+|* 16 |        INDEX RANGE SCAN                      | I_USER2        |     1 |     4 |     1   (0)| 00:00:01 |
+|* 17 |       INDEX RANGE SCAN                       | I_USER2        |     1 |     4 |     1   (0)| 00:00:01 |
+|* 18 |      INDEX RANGE SCAN                        | I_USER2        |     1 |     4 |     1   (0)| 00:00:01 |
+|  19 |     TABLE ACCESS CLUSTER                     | TS$            |     1 |     3 |     1   (0)| 00:00:01 |
+|* 20 |      INDEX UNIQUE SCAN                       | I_TS#          |     1 |       |     0   (0)| 00:00:01 |
+|  21 |    TABLE ACCESS CLUSTER                      | SEG$           |     1 |    11 |     1   (0)| 00:00:01 |
+|* 22 |     INDEX UNIQUE SCAN                        | I_FILE#_BLOCK# |     1 |       |     0   (0)| 00:00:01 |
+|* 23 |   TABLE ACCESS CLUSTER                       | TAB$           |     1 |    12 |     2   (0)| 00:00:01 |
+|* 24 |    INDEX UNIQUE SCAN                         | I_OBJ#         |     1 |       |     1   (0)| 00:00:01 |
+---------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("IO"."TYPE#"<>2 OR  (SELECT 1 FROM "SYS"."TAB$" "T" WHERE "T"."OBJ#"=:B1 AND
+              BITAND("T"."PROPERTY",36893488147419103232)=0)=1)
+  10 - filter(BITAND("O"."FLAGS",128)=0)
+  11 - access("O"."NAME"='T_IND1')
+       filter("O"."NAME"='T_IND1')
+  12 - filter(BITAND("I"."FLAGS",4096)=0)
+  13 - access("O"."OBJ#"="I"."OBJ#")
+  14 - access("I"."BO#"="IO"."OBJ#")
+  15 - access("I"."INDMETHOD#"="ITO"."OBJ#"(+))
+  16 - access("U"."USER#"="O"."OWNER#")
+  17 - access("IO"."OWNER#"="IU"."USER#")
+  18 - access("ITO"."OWNER#"="ITU"."USER#"(+))
+  20 - access("I"."TS#"="TS"."TS#"(+))
+  22 - access("I"."TS#"="S"."TS#"(+) AND "I"."FILE#"="S"."FILE#"(+) AND "I"."BLOCK#"="S"."BLOCK#"(+))
+  23 - filter(BITAND("T"."PROPERTY",36893488147419103232)=0)
+  24 - access("T"."OBJ#"=:B1)
+
+Note
+-----
+   - this is an adaptive plan
+
+SQL> SET AUTOTRACE TRACEONLY EXP;
+SQL> select * from t where object_name='STANDARD';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 1601196873
+
+--------------------------------------------------------------------------
+| Id  | Operation         | Name | Rows  | Bytes | Cost (%CPU)| Time     |
+--------------------------------------------------------------------------
+|   0 | SELECT STATEMENT  |      |    11 |  4565 |   270   (1)| 00:00:01 |
+|*  1 |  TABLE ACCESS FULL| T    |    11 |  4565 |   270   (1)| 00:00:01 |
+--------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("OBJECT_NAME"='STANDARD')
+
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+SQL> ALTER SESSION SET "OPTIMIZER_USE_INVISIBLE_INDEXES" = TRUE;
+
+Sesi¾n modificada.
+
+SQL> SET AUTOTRACE TRACEONLY EXP
+SQL> select * from t where object_name='STANDARD';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 1733682900
+
+----------------------------------------------------------------------------------------------
+| Id  | Operation                           | Name   | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                    |        |     2 |   830 |     4   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID BATCHED| T      |     2 |   830 |     4   (0)| 00:00:01 |
+|*  2 |   INDEX RANGE SCAN                  | T_IND1 |     2 |       |     3   (0)| 00:00:01 |
+----------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("OBJECT_NAME"='STANDARD')
+
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+SQL> select * from t where object_name='STANDARD';
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 1733682900
+
+----------------------------------------------------------------------------------------------
+| Id  | Operation                           | Name   | Rows  | Bytes | Cost (%CPU)| Time     |
+----------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                    |        |     2 |   830 |     4   (0)| 00:00:01 |
+|   1 |  TABLE ACCESS BY INDEX ROWID BATCHED| T      |     2 |   830 |     4   (0)| 00:00:01 |
+|*  2 |   INDEX RANGE SCAN                  | T_IND1 |     2 |       |     3   (0)| 00:00:01 |
+----------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   2 - access("OBJECT_NAME"='STANDARD')
+
+Note
+-----
+   - dynamic statistics used: dynamic sampling (level=2)
+
+SQL> alter index t_ind1 visible;
+
+═ndice modificado.
+
+SQL> SET AUTOTRACE TRACEONLY off
+SP2-0158: opci¾n SET desconocida "off"
+SQL> select index_name,VISIBILITY from DBA_INDEXES where index_name='T_IND1';
+
+
+Plan de Ejecuci¾n
+----------------------------------------------------------
+Plan hash value: 2300050336
+
+---------------------------------------------------------------------------------------------------------------
+| Id  | Operation                                    | Name           | Rows  | Bytes | Cost (%CPU)| Time     |
+---------------------------------------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                             |                |     2 |   246 |    35   (0)| 00:00:01 |
+|*  1 |  FILTER                                      |                |       |       |            |           |
+|   2 |   NESTED LOOPS OUTER                         |                |     2 |   246 |    35   (0)| 00:00:01 |
+|   3 |    NESTED LOOPS OUTER                        |                |     1 |   112 |    34   (0)| 00:00:01 |
+|   4 |     NESTED LOOPS OUTER                       |                |     1 |   109 |    33   (0)| 00:00:01 |
+|   5 |      NESTED LOOPS                            |                |     1 |   105 |    32   (0)| 00:00:01 |
+|   6 |       NESTED LOOPS                           |                |     1 |   101 |    31   (0)| 00:00:01 |
+|   7 |        NESTED LOOPS OUTER                    |                |     1 |    97 |    30   (0)| 00:00:01 |
+|   8 |         NESTED LOOPS                         |                |     1 |    89 |    29   (0)| 00:00:01 |
+|   9 |          NESTED LOOPS                        |                |     1 |    77 |    28   (0)| 00:00:01 |
+|* 10 |           TABLE ACCESS BY INDEX ROWID BATCHED| OBJ$           |     1 |    49 |    27   (0)| 00:00:01 |
+|* 11 |            INDEX SKIP SCAN                   | I_OBJ2         |     1 |       |    26   (0)| 00:00:01 |
+|* 12 |           TABLE ACCESS BY INDEX ROWID        | IND$           |     1 |    28 |     1   (0)| 00:00:01 |
+|* 13 |            INDEX UNIQUE SCAN                 | I_IND1         |     1 |       |     0   (0)| 00:00:01 |
+|* 14 |          INDEX RANGE SCAN                    | I_OBJ1         |     1 |    12 |     1   (0)| 00:00:01 |
+|* 15 |         INDEX RANGE SCAN                     | I_OBJ1         |     1 |     8 |     1   (0)| 00:00:01 |
+|* 16 |        INDEX RANGE SCAN                      | I_USER2        |     1 |     4 |     1   (0)| 00:00:01 |
+|* 17 |       INDEX RANGE SCAN                       | I_USER2        |     1 |     4 |     1   (0)| 00:00:01 |
+|* 18 |      INDEX RANGE SCAN                        | I_USER2        |     1 |     4 |     1   (0)| 00:00:01 |
+|  19 |     TABLE ACCESS CLUSTER                     | TS$            |     1 |     3 |     1   (0)| 00:00:01 |
+|* 20 |      INDEX UNIQUE SCAN                       | I_TS#          |     1 |       |     0   (0)| 00:00:01 |
+|  21 |    TABLE ACCESS CLUSTER                      | SEG$           |     1 |    11 |     1   (0)| 00:00:01 |
+|* 22 |     INDEX UNIQUE SCAN                        | I_FILE#_BLOCK# |     1 |       |     0   (0)| 00:00:01 |
+|* 23 |   TABLE ACCESS CLUSTER                       | TAB$           |     1 |    12 |     2   (0)| 00:00:01 |
+|* 24 |    INDEX UNIQUE SCAN                         | I_OBJ#         |     1 |       |     1   (0)| 00:00:01 |
+---------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+   1 - filter("IO"."TYPE#"<>2 OR  (SELECT 1 FROM "SYS"."TAB$" "T" WHERE "T"."OBJ#"=:B1 AND
+              BITAND("T"."PROPERTY",36893488147419103232)=0)=1)
+  10 - filter(BITAND("O"."FLAGS",128)=0)
+  11 - access("O"."NAME"='T_IND1')
+       filter("O"."NAME"='T_IND1')
+  12 - filter(BITAND("I"."FLAGS",4096)=0)
+  13 - access("O"."OBJ#"="I"."OBJ#")
+  14 - access("I"."BO#"="IO"."OBJ#")
+  15 - access("I"."INDMETHOD#"="ITO"."OBJ#"(+))
+  16 - access("U"."USER#"="O"."OWNER#")
+  17 - access("IO"."OWNER#"="IU"."USER#")
+  18 - access("ITO"."OWNER#"="ITU"."USER#"(+))
+  20 - access("I"."TS#"="TS"."TS#"(+))
+  22 - access("I"."TS#"="S"."TS#"(+) AND "I"."FILE#"="S"."FILE#"(+) AND "I"."BLOCK#"="S"."BLOCK#"(+))
+  23 - filter(BITAND("T"."PROPERTY",36893488147419103232)=0)
+  24 - access("T"."OBJ#"=:B1)
+
+Note
+-----
+   - this is an adaptive plan
+
+
+EstadÝsticas
+----------------------------------------------------------
+        215  recursive calls
+          0  db block gets
+        277  consistent gets
+          0  physical reads
+          0  redo size
+        663  bytes sent via SQL*Net to client
+        624  bytes received via SQL*Net from client
+          2  SQL*Net roundtrips to/from client
+          4  sorts (memory)
+          0  sorts (disk)
+          1  rows processed
+
+SQL> SET AUTOTRACE TRACEONLY off
+SP2-0158: opci¾n SET desconocida "off"
+SQL> SET AUTOTRACE TRACEONLY off;
+SP2-0158: opci¾n SET desconocida "off"
+SQL>

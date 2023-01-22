@@ -1,0 +1,75 @@
+col name format a60
+select status,name from v$controlfile;
+
+col name format a15
+col value format a60
+select name,value from v$parameter where name='control_files';
+
+del C:\app\Cesar\product\18.0.0\oradata\XE\CONTROL01.CTL
+
+
+
+col name format a50
+select status,name from v$controlfile;
+
+alter system set control_files =
+'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\CONTROL01.CTL',
+'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\CONTROL02.CTL',
+'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\CONTROL03.CTL'
+scope=SPFILE;
+
+select instance_name,status from v$instance;
+
+col name format a50
+select status,name from v$controlfile;
+
+col name format a15
+col value format a60
+select name,value from v$parameter where name='control_files';
+
+show parameter control_files
+
+col name format a50
+select status,name from v$controlfile;
+
+alter system set control_files =
+'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\CONTROL01.CTL',
+'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\CONTROL02.CTL'
+scope=SPFILE;
+
+
+**************** lab tables espace
+
+select tablespace_name,status from dba_tablespaces;
+
+col TABLESPACE_NAME format a15
+col FILE_NAME format a50
+select tablespace_name,file_name,bytes from dba_data_files;
+
+connect /@XEPDB1 as sysdba
+
+select tablespace_name,status from dba_tablespaces;
+
+col SEGMENT_NAME format a20
+select segment_name,segment_type,tablespace_name,extents,blocks 
+from dba_segments where segment_name='EMPLOYEES';
+
+
+select * from v$tablespace;
+
+***LA D NO SE VE**
+
+
+
+****PARTE 4. 
+
+sqlplus /@XEPDB1 as sysdba
+
+conn sys as sysdba
+
+sho pdbs
+
+lsnrctl status
+
+ALTER SESSION SET CONTAINER =XEPDB1;
+SHO CON_NAME

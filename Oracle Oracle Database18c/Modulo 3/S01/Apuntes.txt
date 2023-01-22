@@ -1,0 +1,9 @@
+Sysdate - Fecha y tiemnpo actual
+
+CURRENT_DATE -> Tipo de dato de fecha.
+TO_DATE para darle un formato.
+
+
+insert into sales_reps(id, name, salary, commission_pct) 
+select employee_id, last_name, salary, commission_pct
+from employees where job_id like 'ok%'

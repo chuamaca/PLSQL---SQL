@@ -1,0 +1,5 @@
+sqlplus  / as sysdba
+
+CONN SYS/oracle@xepdb1 as sysdba
+
+alter user HR identified by hr account unlock;

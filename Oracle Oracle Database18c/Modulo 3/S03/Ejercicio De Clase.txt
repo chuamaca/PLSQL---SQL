@@ -1,0 +1,17 @@
+Create USER Inventory
+IDENTIFIED BY 123456:
+
+CREATE PROFILE INVENTORY
+LIMIT IDDLE_TIME 180
+
+ALTER USER Inventory PROFILE 
+APP_INVENTORY
+
+
+
+create user inventory identified 12345;
+ 
+ 
+CREATE PROFILE app_inventory LIMIT LIMIT IDLE_TIME  20;
+
+ALTER USER inventory PROFILE app_inventory;

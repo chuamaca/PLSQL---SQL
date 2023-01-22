@@ -1,0 +1,306 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2022.05.27 20:18:30 =~=~=~=~=~=~=~=~=~=~=~=
+login as: oracle
+oracle@192.168.0.26's password: 
+Last login: Sun May 22 19:24:13 2022 from 192.168.0.15
+[oracle@srv1 ~]$ [oracle@srv1 ~]$ [oracle@srv1 ~]$ id
+uid=54321(oracle) gid=54321(oinstall) groups=54321(oinstall),492(vboxsf),54322(dba) context=unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023
+[oracle@srv1 ~]$ [oracle@srv1 ~]$ 
+[oracle@srv1 ~]$ 
+[oracle@srv1 ~]$ 
+[oracle@srv1 ~]$ 
+[oracle@srv1 ~]$ sqlplus / as ssysdba
+
+SQL*Plus: Release 12.2.0.1.0 Production on Sat May 28 05:19:14 2022
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> exit
+Disconnected
+[oracle@srv1 ~]$ [oracle@srv1 ~]$ [oracle@srv1 ~]$  sqlplus / as sysdba
+
+SQL*Plus: Release 12.2.0.1.0 Production on Sat May 28 05:22:11 2022
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> cle scr
+SQL> !ifconfig
+eth0      Link encap:Ethernet  HWaddr 08:00:27:A0:83:DF  
+          inet addr:192.168.0.26  Bcast:192.168.0.255  Mask:255.255.255.0
+          inet6 addr: fe80::a00:27ff:fea0:83df/64 Scope:Link
+          inet6 addr: ::a00:27ff:fea0:83df/64 Scope:Global
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:18596 errors:0 dropped:55 overruns:0 frame:0
+          TX packets:3234 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:1495464 (1.4 MiB)  TX bytes:227686 (222.3 KiB)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:5133 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:5133 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:799294 (780.5 KiB)  TX bytes:799294 (780.5 KiB)
+
+
+SQL> cle scr
+SQL> exit
+Disconnected
+[oracle@srv1 ~]$ sqlplus / as sysdba
+
+SQL*Plus: Release 12.2.0.1.0 Production on Sat May 28 06:54:39 2022
+
+Copyright (c) 1982, 2016, Oracle.  All rights reserved.
+
+Connected to an idle instance.
+
+SQL> 
+SQL> starup  tup
+ORACLE instance started.
+
+Total System Global Area 1744830464 bytes
+Fixed Size    8621616 bytes
+Variable Size  536871376 bytes
+Database Buffers 1191182336 bytes
+Redo Buffers    8155136 bytes
+Database mounted.
+Database opened.
+SQL> select * from global_name;
+
+GLOBAL_NAME
+--------------------------------------------------------------------------------
+ORADB.LOCALDOMAIN
+
+SQL> sh p  o pdbs
+SQL> conn sys as ys  sysdba
+Enter password: 
+Connected.
+SQL> sho pdbs
+SQL> sho user
+USER is "SYS"
+SQL> sho co      select * from v$databa        dba_da_ ta_files;
+
+FILE_NAME
+--------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS
+---------- ------------------------------ ---------- ---------- ---------
+RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS
+------------ --- ---------- ---------- ------------ ---------- -----------
+ONLINE_ LOST_WR
+------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_system_jo89qqc2_.dbf
+ 1 SYSTEM   859832320 104960 AVAILABLE
+   1 YES 3.4360E+10    4194302       1280  858783744    104832
+SYSTEMOFF
+
+
+FILE_NAME
+--------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS
+---------- ------------------------------ ---------- ---------- ---------
+RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS
+------------ --- ---------- ---------- ------------ ---------- -----------
+ONLINE_ LOST_WR
+------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_sysaux_jo89wy8j_.dbf
+ 3 SYSAUX   576716800  70400 AVAILABLE
+   3 YES 3.4360E+10    4194302       1280  575668224     70272
+ONLINEOFF
+
+
+FILE_NAME
+--------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS
+---------- ------------------------------ ---------- ---------- ---------
+RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS
+------------ --- ---------- ---------- ------------ ---------- -----------
+ONLINE_ LOST_WR
+------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_soetbs_jo942ytj_.dbf
+ 5 SOETBS  1123024896 137088 AVAILABLE
+   5 YES 3.4360E+10    4194302       8192 1121976320    136960
+ONLINEOFF
+
+
+FILE_NAME
+--------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS
+---------- ------------------------------ ---------- ---------- ---------
+RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS
+------------ --- ---------- ---------- ------------ ---------- -----------
+ONLINE_ LOST_WR
+------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_users_jo8b011p_.dbf
+ 7 USERS     5242880    640 AVAILABLE
+   7 YES 3.4360E+10    4194302160    4194304       512
+ONLINEOFF
+
+
+FILE_NAME
+--------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS
+---------- ------------------------------ ---------- ---------- ---------
+RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS
+------------ --- ---------- ---------- ------------ ---------- -----------
+ONLINE_ LOST_WR
+------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_undotbs1_jo89zxop_.dbf
+ 4 UNDOTBS1    68157440   8320 AVAILABLE
+   4 YES 3.4360E+10    4194302640   67108864      8192
+ONLINEOFF
+
+
+SQL> e set line 180
+SQL> /
+
+FILE_NAME
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS  RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS ONLINE_ LOST_WR
+---------- ------------------------------ ---------- ---------- --------- ------------ --- ---------- ---------- ------------ ---------- ----------- ------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_system_jo89qqc2_.dbf
+ 1 SYSTEM   859832320 104960 AVAILABLE     1 YES 3.4360E+10 4194302 1280  858783744      104832 SYSTEM  OFF
+
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_sysaux_jo89wy8j_.dbf
+ 3 SYSAUX   576716800  70400 AVAILABLE     3 YES 3.4360E+10 4194302 1280  575668224       70272 ONLINE  OFF
+
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_soetbs_jo942ytj_.dbf
+ 5 SOETBS  1123024896 137088 AVAILABLE     5 YES 3.4360E+10 4194302 8192 1121976320      136960 ONLINE  OFF
+
+
+FILE_NAME
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   FILE_ID TABLESPACE_NAME       BYTES BLOCKS STATUS  RELATIVE_FNO AUT   MAXBYTES  MAXBLOCKS INCREMENT_BY USER_BYTES USER_BLOCKS ONLINE_ LOST_WR
+---------- ------------------------------ ---------- ---------- --------- ------------ --- ---------- ---------- ------------ ---------- ----------- ------- -------
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_users_jo8b011p_.dbf
+ 7 USERS     5242880    640 AVAILABLE     7 YES 3.4360E+10 4194302  160 4194304 512 ONLINE  OFF
+
+/u01/app/oracle/oradata/ORADB/datafile/o1_mf_undotbs1_jo89zxop_.dbf
+ 4 UNDOTBS1    68157440   8320 AVAILABLE     4 YES 3.4360E+10 4194302  640671088648192 ONLINE  OFF
+
+
+SQL> select * from v$control_file
+  2  ;
+select * from v$control_file
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from v$control_file;
+select * from v$control_file
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from v$controlfile;
+
+STATUS
+-------
+NAME
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+IS_ BLOCK_SIZE FILE_SIZE_BLKS  CON_ID
+--- ---------- -------------- ----------
+
+/u01/app/oracle/oradata/ORADB/controlfile/o1_mf_jo8b1v79_.ctl
+NO 16384  646       0
+
+
+/u01/app/oracle/fra/ORADB/ORADB/controlfile/o1_mf_jo8b1w3t_.ctl
+YES 16384  646       0
+
+STATUS
+-------
+NAME
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+IS_ BLOCK_SIZE FILE_SIZE_BLKS  CON_ID
+--- ---------- -------------- ----------
+
+
+SQL> shu omm    tdown imme             shut immediate              describe dba_con   data_files
+ Name       Null?Type
+ ----------------------------------------------------------------------------------------------------- -------- --------------------------------------------------------------------
+ FILE_NAMEVARCHAR2(513)
+ FILE_IDNUMBER
+ TABLESPACE_NAMEVARCHAR2(30)
+ BYTESNUMBER
+ BLOCKS NUMBER
+ STATUS VARCHAR2(9)
+ RELATIVE_FNONUMBER
+ AUTOEXTENSIBLE VARCHAR2(3)
+ MAXBYTESNUMBER
+ MAXBLOCKSNUMBER
+ INCREMENT_BYNUMBER
+ USER_BYTESNUMBER
+ USER_BLOCKSNUMBER
+ ONLINE_STATUSVARCHAR2(7)
+ LOST_WRITE_PROTECTVARCHAR2(7)
+
+SQL> desc dba_data_files
+ Name       Null?Type
+ ----------------------------------------------------------------------------------------------------- -------- --------------------------------------------------------------------
+ FILE_NAMEVARCHAR2(513)
+ FILE_IDNUMBER
+ TABLESPACE_NAMEVARCHAR2(30)
+ BYTESNUMBER
+ BLOCKS NUMBER
+ STATUS VARCHAR2(9)
+ RELATIVE_FNONUMBER
+ AUTOEXTENSIBLE VARCHAR2(3)
+ MAXBYTESNUMBER
+ MAXBLOCKSNUMBER
+ INCREMENT_BYNUMBER
+ USER_BYTESNUMBER
+ USER_BLOCKSNUMBER
+ ONLINE_STATUSVARCHAR2(7)
+ LOST_WRITE_PROTECTVARCHAR2(7)
+
+SQL> shut immediate
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+SQL> startup
+ORACLE instance started.
+
+Total System Global Area 1744830464 bytes
+Fixed Size    8621616 bytes
+Variable Size  536871376 bytes
+Database Buffers 1191182336 bytes
+Redo Buffers    8155136 bytes
+Database mounted.
+Database opened.
+SQL> exit
+Disconnected from Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production
+[oracle@srv1 ~]$ cat /etc/oratab
+#
+
+
+
+# This file is used by ORACLE utilities.  It is created by root.sh
+# and updated by either Database Configuration Assistant while creating
+# a database or ASM Configuration Assistant while creating ASM instance.
+
+# A colon, ':', is used as the field terminator.  A new line terminates
+# the entry.  Lines beginning with a pound sign, '#', are comments.
+#
+# Entries are of the form:
+#   $ORACLE_SID:$ORACLE_HOME:<N|Y>:
+#
+# The first and second fields are the system identifier and home
+# directory of the database respectively.  The third field indicates
+# to the dbstart utility that the database should , "Y", or should not,
+# "N", be brought up at system boot time.
+#
+# Multiple entries with the same $ORACLE_SID are not allowed.
+#
+#
+ORADB:/u01/app/oracle/product/12.2.0/db_1:Y
+[oracle@srv1 ~]$ 

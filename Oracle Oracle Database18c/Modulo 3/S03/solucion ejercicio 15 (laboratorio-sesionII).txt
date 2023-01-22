@@ -1,0 +1,27 @@
+Ejercicio pagina 15 guia de usuarios
+
+
+solucion: 
+
+create user juan identified by oracle;
+create user juana identified by oracle;
+create user alex identified by oracle;
+create user maria identified by oracle;
+
+
+grant unlimited tablespace to juana;
+
+create role personal;
+create role administrativo;
+create role analista;
+
+grant create session to personal;
+grant create table to administrativo;
+grant select, insert on hr.employees to analista;
+
+grant personal to juan;
+grant administrativo to juana;
+grant analista to juan, maria;
+
+grant personal to administrativo;
+grant personal to analista;

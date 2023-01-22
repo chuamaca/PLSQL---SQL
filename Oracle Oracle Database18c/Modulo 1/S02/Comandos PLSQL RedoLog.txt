@@ -1,0 +1,28 @@
+alter database add logfile
+member 'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\REDO04.LOG'
+to group 1;
+
+
+alter database
+drop logfile
+member 'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\REDO04.LOG';
+
+dir C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\*.log /b
+
+select group#,member from v$logfile;
+
+
+
+alter database 
+drop logfile
+member 'C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\REDO04.LOG';
+
+col group# format 999999
+col member format a50
+select group#,status,member from v$logfile;
+
+host dir C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\*.LOG /b
+
+host del C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\REDO04.LOG /q
+
+C:\APP\CESAR\PRODUCT\18.0.0\ORADATA\XE\*.LOG /b

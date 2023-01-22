@@ -1,0 +1,8 @@
+ROTACION DE LOGS DE BASE DE DATOS
+
+https://blog.pythian.com/log-rotation-oracle-database/
+http://bbdd-error.blogspot.com/2017/10/purging-and-archiving-oracle-alertlog.html
+
+
+ALGO MAS BASICO:
+https://smarttechways.com/2014/11/01/create-rotational-script-in-oracle/

@@ -1,0 +1,45 @@
+col username format a20
+col profile format a20
+select username,profile from dba_users where username='Alice';
+
+connect sys/oracle@xepdb1 as sysdba;
+
+
+col username format a20
+col profile format a20
+select username,profile from dba_users where username='ALICE';
+
+col profile format a12
+col RESOURCE_NAME format a25
+col limit format a15
+set pagesize 100
+select * from dba_profiles where profile='DEFAULT';
+
+connect alice/oracl@xepdb1
+
+connect alice/oracle@xepdb1
+
+connect sys/oracle@xepdb1 as sysdba
+
+create profile usr_profile01 limit failed_login_attempts 3;
+
+alter user alice profile usr_profile01;
+
+connect sys/oracle@xepdb1 as sysdba
+
+select username,account_status from dba_users where username='ALICE';
+
+alter user alice account unlock;
+
+select username,account_status from dba_users where username='ALICE';
+
+create profile usr_profile02 limit sessions_per_user 2;
+
+connect alice/oracle@xepdb1
+
+
+alter user alice profile usr_profile02;
+
+show parameter resource
+
+alter system set resource_limit=true;
